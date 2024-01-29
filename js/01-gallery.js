@@ -1,13 +1,13 @@
-// importowanie tablicy obrazów
+// importowanie zdjęć z pliku
 import { galleryItems } from "./gallery-items.js";
 
-//zmienna za pomocą, której dostajemy się do galerii
+// dostęp do elementu HTML
 const gallery = document.querySelector(".gallery");
 
-// zmienna listItems to iteracja po tablicy obrazów i za pomocą wartości właściwości danego elementu iterowanego, tworzony jest kod HTML
+// przypisanie do zmiennej listItems wyniku iteracji po tablicy zdjęć
 const listItems = galleryItems
+  // pętla map przyjmuje jeden parametr, którym jest element z tablicy z którego wyciąganne są właściwości które zostaną umieszczone w stringu który zawiera znaczniki HTML
   .map(
-    // parametr galleryItem oznacza iterowany element
     (galleryItem) =>
       `<li class="gallery__item">
             <a class="gallery__link" href="${galleryItem.original}">
@@ -20,50 +20,50 @@ const listItems = galleryItems
             </a>
       </li>`
   )
+  // metoda tablicowa join łączy tablicę w string, który będzie można dodać doo kodu HTML
   .join("");
 
-// dodanie do galerii którą jest znacznik <ul></ul> kod HTML, który powstał przy pomocy iteracji po tablicy
+// do kodu HTML dodajemy zmienną listItems która zawiera stringi ze znacznikami HTML
 gallery.insertAdjacentHTML("afterbegin", listItems);
 
-// deklarujemy zmienną activeLightbox która obecnie ma wartość null
+// przypisujemy do zmiennej activeLightbox wartość null, która informuje nas o tym, że modal nie jest wyświetlony
 let activeLightbox = null;
 
-// gdy klikniemy na galerię wywołuje się callback
+// gdy znacznik <ul></ul> zostanie naciśnięty
 gallery.addEventListener("click", (event) => {
-  // usuwa domyślne ustawienia przegllądarki
+  // usuń domyślne zachowanie przeglądarki, aby zdjęcia się nie pobierały
   event.preventDefault();
 
-  // tworzymy zmienną za pomocą której łatwiej będzie nam się dostać do elementu na którym został wywołany event
+  // tworzymy zmienną clickedElement, której wartość to element na którym został wywołany event
   const clickedElement = event.target;
-  // jeśli element na którym został wywołany event to nie jest zdjęcie
+
+  // jeśli węzeł elementu na którym został wywołany event nie jest znacznikiem <img> to zakończ działanie programu
   if (clickedElement.nodeName !== "IMG") {
-    // zakończ działanie programu
     return;
   }
-  // w przeciwnym przypadku
-
-  // stwórz zmienną która zawiera wartość zmiennej data-source klikniętego elementu
+  // zmienna largeImageUrl zawiera link do zdjęcia który będzie modalem za pomocą customowego atrybutu dataset (data-source)
   const largeImageUrl = clickedElement.dataset.source;
 
-  // zmienna lightbox zawiera utworzony za pomocą biblioteki modal
+  // zmienna lightbox to stworzenie modalu za pomocą biblioteki basicLightbox
   const lightbox = basicLightbox.create(
-    // w src danego zdjęcia podana jest zmienna largeImageUrl króra zawiera ścieżkę do obrazu
+    // tworzenie modalu którego zawartością będzie zdjęcie o src = zmiennej largeImageUrl
     `<img src="${largeImageUrl}" class="gallery__image">`
   );
-  // uruchomienie zmiennej lightbox
+  // za pomocą metody biblioteki basicLightbox .show(), wyświetlamy modal
   lightbox.show();
 
-  // przypisanie do zmiennej activeLightbox, aktywny lightbox
+  // przypisujemy zmiennej activeLightbox wartość lightboxu ponieważ jest on widoczny na ekranie
   activeLightbox = lightbox;
 });
 
-// gdy nastąpi keydown
+// przy naciśnięciu klawisza wykona się callback, którego parametrem będzie event
 document.addEventListener("keydown", (event) => {
-  // i jeśli klucz eventu to przycisk esc oraz okno lightbox będzie aktywne
+  // jeśli klawisz który naciśnięto to esc oraz lightbox jest na ekranie
   if (event.key === "Escape" && activeLightbox) {
-    // zamknij otwarte okno Lightbox
+    // to za pomocą metody .close() biblioteki basicLightbox schowamy modal z ekranu
     activeLightbox.close();
-    // zresetuj zmienną przechowującą otwarte okno Lightbox
+
+    // oraz usuniemy ze zmiennej wartość lightbox i nadamy jej wartość null, ponieważ teraz, żaden modal nie jest na ekranie
     activeLightbox = null;
   }
 });
