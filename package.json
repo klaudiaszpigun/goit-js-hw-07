@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "basiclightbox": "^5.0.4",
     "validator": "^13.11.0"
   }
 }

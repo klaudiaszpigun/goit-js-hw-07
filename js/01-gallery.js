@@ -25,7 +25,6 @@ const listItems = galleryItems
 
 // do kodu HTML dodajemy zmienną listItems która zawiera stringi ze znacznikami HTML
 gallery.insertAdjacentHTML("afterbegin", listItems);
-
 // przypisujemy do zmiennej activeLightbox wartość null, która informuje nas o tym, że modal nie jest wyświetlony
 let activeLightbox = null;
 
@@ -55,7 +54,6 @@ gallery.addEventListener("click", (event) => {
   // przypisujemy zmiennej activeLightbox wartość lightboxu ponieważ jest on widoczny na ekranie
   activeLightbox = lightbox;
 });
-
 // przy naciśnięciu klawisza wykona się callback, którego parametrem będzie event
 document.addEventListener("keydown", (event) => {
   // jeśli klawisz który naciśnięto to esc oraz lightbox jest na ekranie
